@@ -7,10 +7,20 @@
       label.units__label(for="checkbox")
       span.units__symbols &deg;C &deg;F
       p {{ checked }}
+    h1 {{ day }}, {{ month }} {{ date }} {{ year }}
+    h2 {{ description }}
+    h1 {{ mainTemperature }}&deg;C
+    i(class="main-icon", :class="mainIconClass")
+    p(v-for="item in timezzz", :key="item.id") {{ item.dt_txt }} | {{ item.main.temp }}&deg;C |
 
 </template>
 
 <script>
+  const DAYSOFWEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+    'November', 'December'];
+  const DAYTIME = ['Morning', 'Day', 'Evening', 'Night'];
+
   export default {
     name: 'WeatherView',
 
@@ -23,10 +33,58 @@
     computed: {
       city() {
         return this.$store.state.inputSearch;
+      },
+
+      day() {
+        return DAYSOFWEEK[ this.timestamp().getDay() ];
+      },
+
+      month() {
+        return MONTHS[ this.timestamp().getMonth() ];
+      },
+
+      date() {
+        const DATE = this.timestamp().getDate();
+        if (DATE === 1 || DATE === 21 || DATE === 31) {
+          return DATE + 'st';
+        }
+        else if (DATE === 2 || DATE === 22) {
+          return DATE + 'nd';
+        }
+        else if (DATE === 3 || DATE === 23) {
+          return DATE + 'rd';
+        }
+        else {
+          return DATE + 'th';
+        }
+      },
+
+      year() {
+        return this.timestamp().getFullYear();
+      },
+
+      description() {
+        return this.$store.state.weather.weather[0].description;
+      },
+
+      mainTemperature() {
+        return Math.round(this.$store.state.weather.main.temp);
+      },
+
+      mainIconClass() {
+        return 'wi wi-owm-' + this.$store.state.weather.weather[0].id;
+      },
+
+      timezzz() {
+        return this.$store.state.forecast.list;
       }
     },
 
     methods: {
+      timestamp() {
+        return new Date(+this.$store.state.weather.dt * 1000);
+      },
+
       back() {
         this.$store.commit('setIsShowWeather', false);
       }
@@ -93,6 +151,10 @@
         left: 250px;
         z-index: -1;
       }
+    }
+    .main-icon {
+      color: #ff0000;
+      font-size: 70px;
     }
   }
 </style>

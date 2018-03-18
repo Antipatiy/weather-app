@@ -4,6 +4,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+const URL = 'https://api.openweathermap.org/data/2.5/';
+const APPID = '&APPID=33272e8b33b64b1c603b1a9cbd022c16';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,6 +15,7 @@ export default new Vuex.Store({
   state: {
     inputSearch: '',
     weather: {},
+    forecast: {},
     isShowWeather: false
   },
 
@@ -24,6 +28,10 @@ export default new Vuex.Store({
       state.weather = data;
     },
 
+    setForecastData(state, data) {
+      state.forecast = data;
+    },
+
     setIsShowWeather(state, boolean) {
       state.isShowWeather = boolean;
     },
@@ -31,38 +39,23 @@ export default new Vuex.Store({
 
   actions: {
     setAsyncWeatherData({commit}, {city = '', lon = '', lat = '', units = '&units=metric'} = {}) {
-     Promise.all([
-       axios.get('https://api.openweathermap.org/data/2.5/weather?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units),
-       axios.get('https://api.openweathermap.org/data/2.5/forecast?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units)
-     ])
+      Promise.all([
+        axios.get(URL + 'weather?' + city + lat + lon + APPID + units),
+        axios.get(URL + 'forecast?' + city + lat + lon + APPID + units)
+      ])
         .then((response) => {
-          console.log(response[0].data, response[1].data);
+          commit('setWeatherData', response[0].data);
+          commit('setForecastData', response[1].data);
+          commit('updateInputSearch', response[1].data.city.name);
+          commit('setIsShowWeather', true);
+          return response.data;
         })
-       .catch((error) => {
-         console.error(error);
-       });
-
-      // axios({
-      //   method: 'get',
-      //   url: 'https://api.openweathermap.org/data/2.5/forecast?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units,
-      //   responseType: 'json',
-      // })
-      //   .then((response) => {
-      //     commit('setWeatherData', response.data);
-      //     commit('updateInputSearch', response.data.city.name);
-      //     commit('setIsShowWeather', true);
-      //     return response.data;
-      //   })
-      //   .then((json) => {
-      //     json.list.forEach((item) => console.log(item.dt_txt));
-      //     console.log(json.city.name);
-      //   })
-      //   .catch((error) => {
-      //     if (error.response.status === 404) {
-      //       commit('updateInputSearch', city.substring(2) + ' not found');
-      //     }
-      //     console.error(error);
-      //   });
+        .catch((error) => {
+          if (error.response.status === 404) {
+            commit('updateInputSearch', city.substring(2) + ' not found');
+          }
+          console.error(error);
+        });
     }
   }
 });

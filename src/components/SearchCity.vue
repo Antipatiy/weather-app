@@ -6,9 +6,7 @@
       br
       | use my
       span.search__position(@click="searchByCoordinate") current position
-      <!--i.wi.wi-owm-701(style="font-size: 130px; color: red;")-->
       i.material-icons.material-icons_search(@click="searchByInput") search
-    button(@click="mutate") zzzzz
 </template>
 
 <script>
@@ -27,10 +25,6 @@
     },
 
     methods: {
-      mutate() {
-        console.log(this.$store.state.weather);
-      },
-
       setPosition(position) {
         this.$store.dispatch('setAsyncWeatherData', {
           lon: 'lon=' + position.coords.longitude,
