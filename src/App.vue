@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png" @click="toDo">
-    <component v-bind:is="currentView" @setCity="changeComponent"></component>
+    <img src="./assets/logo.png">
+    <component v-bind:is="currentView"></component>
   </div>
 </template>
 
@@ -13,22 +13,15 @@
   export default {
     name: 'App',
     store,
+
     components: {
       SearchCity,
       WeatherView
     },
-    data() {
-      return {
-        currentView: SearchCity
-      }
-    },
-    methods: {
-      toDo() {
-        this.currentView = this.currentView === WeatherView ? SearchCity : WeatherView;
-      },
 
-      changeComponent() {
-        alert(11)
+    computed: {
+      currentView() {
+        return this.$store.state.isShowWeather ? WeatherView : SearchCity;
       }
     }
   }

@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     inputSearch: '',
     weather: {},
-    count: 0
+    isShowWeather: false
   },
 
   mutations: {
@@ -24,9 +24,9 @@ export default new Vuex.Store({
       state.weather = data;
     },
 
-    increment (state, n) {
-      state.count += n
-    }
+    setIsShowWeather(state, boolean) {
+      state.isShowWeather = boolean;
+    },
   },
 
   actions: {
@@ -38,6 +38,8 @@ export default new Vuex.Store({
       })
         .then((response) => {
           commit('setWeatherData', response.data);
+          commit('updateInputSearch', response.data.city.name);
+          commit('setIsShowWeather', true);
           return response.data;
         })
         .then((json) => {
@@ -46,17 +48,10 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           if (error.response.status === 404) {
-            this.inputSearch += ' not found';
+            commit('updateInputSearch', city.substring(2) + ' not found');
           }
           console.error(error);
         });
-    },
-
-    incrementAsync ({commit}, n) {
-      setTimeout(() => {
-        commit('increment', n);
-        alert(this.state.count);
-      }, 1000);
     }
   }
 });

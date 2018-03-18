@@ -1,9 +1,16 @@
 <template lang="pug">
-  div Hello
+  div
+    h1 {{ city }}
 </template>
 
 <script>
   export default {
-    name: 'WeatherView'
+    name: 'WeatherView',
+
+    computed: {
+      city() {
+        return this.$store.state.inputSearch;
+      }
+    }
   }
 </script>

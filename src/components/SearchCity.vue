@@ -12,16 +12,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   export default {
     name: 'StartPage',
-
-    data () {
-      return {
-//        inputSearch: ''
-      }
-    },
 
     computed: {
       inputSearch: {
@@ -39,37 +31,11 @@
         console.log(this.$store.state.weather);
       },
 
-//      getWeatherData({city = '', lon = '', lat = '', units = '&units=metric'} = {}) {
-//        axios({
-//          method: 'get',
-//          url: 'https://api.openweathermap.org/data/2.5/forecast?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units,
-//          responseType: 'json',
-//        })
-//          .then((response) => {
-//            return response.data;
-//          })
-//          .then((json) => {
-//            json.list.forEach((item) => console.log(item.dt_txt));
-//            console.log(json.city.name);
-//          })
-//          .catch((error) => {
-//            if (error.response.status === 404) {
-//              this.inputSearch += ' not found';
-//            }
-//            console.error(error);
-//          });
-//      },
-
       setPosition(position) {
         this.$store.dispatch('setAsyncWeatherData', {
           lon: 'lon=' + position.coords.longitude,
           lat: 'lat=' + position.coords.latitude + '&'
         });
-
-//        this.getWeatherData({
-//          lon: 'lon=' + position.coords.longitude,
-//          lat: 'lat=' + position.coords.latitude + '&'
-//        })
       },
 
       searchByCoordinate() {
@@ -85,13 +51,7 @@
           this.$store.dispatch('setAsyncWeatherData', {
             city: 'q=' + this.inputSearch
           });
-
-//          this.getWeatherData({
-//            city: 'q=' + this.inputSearch
-//          });
         }
-
-        this.$emit('setCity');
       }
     }
   }
