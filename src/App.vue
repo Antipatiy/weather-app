@@ -6,39 +6,41 @@
 </template>
 
 <script>
-import SearchCity from './components/SearchCity'
-import WeatherView from './components/WeatherView'
+  import store from './store/index';
+  import SearchCity from './components/SearchCity'
+  import WeatherView from './components/WeatherView'
 
-export default {
-  name: 'App',
-  components: {
-    SearchCity,
-    WeatherView
-  },
-  data() {
-    return {
-      currentView: SearchCity
-    }
-  },
-  methods: {
-    toDo() {
-      this.currentView = this.currentView === WeatherView ? SearchCity : WeatherView;
+  export default {
+    name: 'App',
+    store,
+    components: {
+      SearchCity,
+      WeatherView
     },
+    data() {
+      return {
+        currentView: SearchCity
+      }
+    },
+    methods: {
+      toDo() {
+        this.currentView = this.currentView === WeatherView ? SearchCity : WeatherView;
+      },
 
-    changeComponent() {
-      alert(11)
+      changeComponent() {
+        alert(11)
+      }
     }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>
