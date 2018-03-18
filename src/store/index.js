@@ -31,27 +31,38 @@ export default new Vuex.Store({
 
   actions: {
     setAsyncWeatherData({commit}, {city = '', lon = '', lat = '', units = '&units=metric'} = {}) {
-      axios({
-        method: 'get',
-        url: 'https://api.openweathermap.org/data/2.5/forecast?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units,
-        responseType: 'json',
-      })
+     Promise.all([
+       axios.get('https://api.openweathermap.org/data/2.5/weather?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units),
+       axios.get('https://api.openweathermap.org/data/2.5/forecast?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units)
+     ])
         .then((response) => {
-          commit('setWeatherData', response.data);
-          commit('updateInputSearch', response.data.city.name);
-          commit('setIsShowWeather', true);
-          return response.data;
+          console.log(response[0].data, response[1].data);
         })
-        .then((json) => {
-          json.list.forEach((item) => console.log(item.dt_txt));
-          console.log(json.city.name);
-        })
-        .catch((error) => {
-          if (error.response.status === 404) {
-            commit('updateInputSearch', city.substring(2) + ' not found');
-          }
-          console.error(error);
-        });
+       .catch((error) => {
+         console.error(error);
+       });
+
+      // axios({
+      //   method: 'get',
+      //   url: 'https://api.openweathermap.org/data/2.5/forecast?' + city + lat + lon + '&APPID=33272e8b33b64b1c603b1a9cbd022c16' + units,
+      //   responseType: 'json',
+      // })
+      //   .then((response) => {
+      //     commit('setWeatherData', response.data);
+      //     commit('updateInputSearch', response.data.city.name);
+      //     commit('setIsShowWeather', true);
+      //     return response.data;
+      //   })
+      //   .then((json) => {
+      //     json.list.forEach((item) => console.log(item.dt_txt));
+      //     console.log(json.city.name);
+      //   })
+      //   .catch((error) => {
+      //     if (error.response.status === 404) {
+      //       commit('updateInputSearch', city.substring(2) + ' not found');
+      //     }
+      //     console.error(error);
+      //   });
     }
   }
 });
