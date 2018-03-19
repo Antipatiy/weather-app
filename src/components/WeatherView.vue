@@ -90,7 +90,7 @@
           else if (HOUR === 18) {
             return DAYTIME[2] + ' ' + TEMPERATURE;
           }
-          else if (HOUR === 21) {
+          else if (HOUR === 0) {
             return DAYTIME[3] + ' ' + TEMPERATURE;
           }
         });
@@ -112,6 +112,7 @@
 
       todayForecast() {
         const today = new Date().getUTCDate();
+        const tomorrow = new Date().getUTCDate() + 1;
 
         return this.$store.state.forecast.list.filter((item) => {
           const DATE = this.timestamp(item.dt).getUTCDate();
@@ -120,7 +121,7 @@
           return DATE === today && HOUR === 9 ||
             DATE === today && HOUR === 12 ||
             DATE === today && HOUR === 18 ||
-            DATE === today && HOUR === 21;
+            DATE === tomorrow && HOUR === 0;
         });
       }
     }
