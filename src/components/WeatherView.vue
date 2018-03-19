@@ -11,7 +11,7 @@
     h2 {{ description }}
     h1 {{ mainTemperature }}&deg;C
     i(class="main-icon", :class="mainIconClass")
-    p(v-for="item in timezzz", :key="item.id") {{ item.dt_txt }} | {{ item.main.temp }}&deg;C |
+    p(v-for="item in todayTemperature", :key="item.id") {{ item }}&deg;C
 
 </template>
 
@@ -36,15 +36,16 @@
       },
 
       day() {
-        return DAYSOFWEEK[ this.timestamp().getDay() ];
+        return DAYSOFWEEK[this.timestamp(this.$store.state.weather.dt).getDay()];
       },
 
       month() {
-        return MONTHS[ this.timestamp().getMonth() ];
+        return MONTHS[this.timestamp(this.$store.state.weather.dt).getMonth()];
       },
 
       date() {
-        const DATE = this.timestamp().getDate();
+        const DATE = this.timestamp(this.$store.state.weather.dt).getDate();
+
         if (DATE === 1 || DATE === 21 || DATE === 31) {
           return DATE + 'st';
         }
@@ -60,7 +61,7 @@
       },
 
       year() {
-        return this.timestamp().getFullYear();
+        return this.timestamp(this.$store.state.weather.dt).getFullYear();
       },
 
       description() {
@@ -75,18 +76,52 @@
         return 'wi wi-owm-' + this.$store.state.weather.weather[0].id;
       },
 
-      timezzz() {
-        return this.$store.state.forecast.list;
+      todayTemperature() {
+        return this.todayForecast().map((item) => {
+          const HOUR = this.timestamp(item.dt).getUTCHours();
+          const TEMPERATURE = Math.round(item.main.temp);
+
+          if (HOUR === 9) {
+            return DAYTIME[0] + ' ' + TEMPERATURE;
+          }
+          else if (HOUR === 12) {
+            return DAYTIME[1] + ' ' + TEMPERATURE;
+          }
+          else if (HOUR === 18) {
+            return DAYTIME[2] + ' ' + TEMPERATURE;
+          }
+          else if (HOUR === 21) {
+            return DAYTIME[3] + ' ' + TEMPERATURE;
+          }
+        });
+      },
+
+      weekForecast() {
+
       }
     },
 
     methods: {
-      timestamp() {
-        return new Date(+this.$store.state.weather.dt * 1000);
-      },
-
       back() {
         this.$store.commit('setIsShowWeather', false);
+      },
+
+      timestamp(timeUTC) {
+        return new Date(+timeUTC * 1000);
+      },
+
+      todayForecast() {
+        const today = new Date().getUTCDate();
+
+        return this.$store.state.forecast.list.filter((item) => {
+          const DATE = this.timestamp(item.dt).getUTCDate();
+          const HOUR = this.timestamp(item.dt).getUTCHours();
+
+          return DATE === today && HOUR === 9 ||
+            DATE === today && HOUR === 12 ||
+            DATE === today && HOUR === 18 ||
+            DATE === today && HOUR === 21;
+        });
       }
     }
   }
@@ -109,7 +144,7 @@
         opacity: 0;
         margin: 10px 0 0 20px;
 
-        &+label {
+        & + label {
           position: relative;
           padding: 0 0 0 60px;
           cursor: pointer;
@@ -141,7 +176,7 @@
           }
         }
 
-        &:checked+label:after {
+        &:checked + label:after {
           left: 38px;
         }
       }
