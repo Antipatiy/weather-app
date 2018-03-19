@@ -11,7 +11,10 @@
     h2 {{ description }}
     h1 {{ mainTemperature }}&deg;C
     i(class="main-icon", :class="mainIconClass")
-    p(v-for="item in todayTemperature", :key="item.id") {{ item }}&deg;C
+    h3(v-for="item in todayTemperature", :key="item.id") {{ item }}&deg;C
+    ul
+      li(v-for="item, index in weekForecast", :key="item.id")
+        i(:class="'wi wi-owm-' + weekForecast[index].weather[0].id") {{ item.main.temp }}
 
 </template>
 
@@ -97,7 +100,9 @@
       },
 
       weekForecast() {
-
+        return this.$store.state.forecast.list.filter((item) => {
+          return this.timestamp(item.dt).getUTCHours() === 12;
+        });
       }
     },
 
