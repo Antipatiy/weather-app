@@ -16,7 +16,8 @@ export default new Vuex.Store({
     inputSearch: '',
     weather: {},
     forecast: {},
-    isShowWeather: false
+    isShowWeather: false,
+    queryMemorize: {},
   },
 
   mutations: {
@@ -35,6 +36,14 @@ export default new Vuex.Store({
     setIsShowWeather(state, boolean) {
       state.isShowWeather = boolean;
     },
+
+    setQueryMemorize(state, data) {
+      state.queryMemorize = data;
+    },
+
+    changeUnitsQueryMemorize(state, changedUnits) {
+      Vue.set(state.queryMemorize, 'units', changedUnits);
+    }
   },
 
   actions: {
@@ -48,6 +57,7 @@ export default new Vuex.Store({
           commit('setForecastData', response[1].data);
           commit('updateInputSearch', response[1].data.city.name);
           commit('setIsShowWeather', true);
+          commit('setQueryMemorize', {city: city, lon: lon, lat: lat, units: units});
           return response.data;
         })
         .catch((error) => {

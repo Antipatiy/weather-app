@@ -3,15 +3,15 @@
     i.material-icons.material-icons_back(@click="back") arrow_back
     h1 {{ city }}
     .units
-      input.units__checkbox(type="checkbox" id="checkbox" v-model="checked")
+      input.units__checkbox(type="checkbox" id="checkbox" v-model="metric", @click="changeUnits")
       label.units__label(for="checkbox")
       span.units__symbols &deg;C &deg;F
-      p {{ checked }}
+      p {{ metric }}
     h1 {{ day }}, {{ month }} {{ date }} {{ year }}
     h2 {{ description }}
-    h1 {{ mainTemperature }}&deg;C
+    h1 {{ mainTemperature }}&deg;{{ units }}
     i(class="main-icon", :class="mainIconClass")
-    h3(v-for="item in todayTemperature", :key="item.id") {{ item }}&deg;C
+    h3(v-for="item in todayTemperature", :key="item.id") {{ item }}&deg;{{ units }}
     ul
       li(v-for="item, index in weekForecast", :key="item.id")
         i(:class="'wi wi-owm-' + weekForecast[index].weather[0].id") {{ item.main.temp }}
@@ -29,7 +29,8 @@
 
     data() {
       return {
-        checked: true
+        metric: true,
+        units: 'C'
       }
     },
 
@@ -111,6 +112,20 @@
         this.$store.commit('setIsShowWeather', false);
       },
 
+      changeUnits() {
+        if (this.metric) {
+          this.$store.commit('changeUnitsQueryMemorize', '&units=imperial');
+          this.units = 'F';
+        }
+        else {
+          this.$store.commit('changeUnitsQueryMemorize', '&units=metric');
+          this.units = 'C';
+        }
+
+        console.log(this.$store.state.queryMemorize.units);
+        this.$store.dispatch('setAsyncWeatherData', this.$store.state.queryMemorize);
+      },
+
       timestamp(timeUTC) {
         return new Date(+timeUTC * 1000);
       },
@@ -163,7 +178,6 @@
             width: 70px;
             height: 26px;
             border-radius: 13px;
-            /*background: #CDD1DA;*/
             box-shadow: inset 0 2px 3px rgba(0, 0, 0, .2);
             transition: .2s;
           }
