@@ -9,7 +9,7 @@ export default {
         return this.$store.state.inputSearch
       },
       set (value) {
-        this.$store.commit('updateInputSearch', value)
+        this.$store.commit('mutate', { key: 'inputSearch', value: value })
       }
     }
   },

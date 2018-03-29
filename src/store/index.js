@@ -22,32 +22,12 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    updateInputSearch(state, value) {
-      state.inputSearch = value;
-    },
-
-    setWeatherData(state, data) {
-      state.weather = data;
-    },
-
-    setForecastData(state, data) {
-      state.forecast = data;
-    },
-
-    setIsShowWeather(state, boolean) {
-      state.isShowWeather = boolean;
-    },
-
-    setQueryMemorize(state, data) {
-      state.queryMemorize = data;
+    mutate(state, data) {
+      state[data.key] = data.value;
     },
 
     changeUnitsQueryMemorize(state, changedUnits) {
       Vue.set(state.queryMemorize, 'units', changedUnits);
-    },
-
-    setUnits(state, units) {
-      state.currentUnits = units;
     }
   },
 
@@ -58,17 +38,18 @@ export default new Vuex.Store({
         axios.get(URL + 'forecast?' + city + lat + lon + APPID + units)
       ])
         .then((response) => {
-          commit('setWeatherData', response[0].data);
-          commit('setForecastData', response[1].data);
-          commit('updateInputSearch', response[1].data.city.name);
-          commit('setIsShowWeather', true);
-          commit('setQueryMemorize', {city: city, lon: lon, lat: lat, units: units});
+          commit('mutate', { key: 'weather', value: response[0].data });
+          commit('mutate', { key: 'forecast', value: response[1].data });
+          commit('mutate', { key: 'inputSearch', value: response[1].data.city.name });
+          commit('mutate', { key: 'isShowWeather', value: true });
+          commit('mutate', { key: 'queryMemorize', value: {city: city, lon: lon, lat: lat, units: units} });
 
-          units.slice(7) === 'metric' ? commit('setUnits', 'C') : commit('setUnits', 'F');
+          units.slice(7) === 'metric' ? commit('mutate', { key: 'currentUnits', value: 'C' }) :
+            commit('mutate', { key: 'currentUnits', value: 'F' });
         })
         .catch((error) => {
           if (error.response.status === 404) {
-            commit('updateInputSearch', city.substring(2) + ' not found');
+            commit('mutate', { key: 'inputSearch', value: city.substring(2) + ' not found' });
           }
           console.error(error);
         });

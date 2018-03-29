@@ -93,7 +93,7 @@ export default {
 
   methods: {
     back() {
-      this.$store.commit('setIsShowWeather', false);
+      this.$store.commit('mutate', { key: 'isShowWeather', value: false });
     },
 
     checkUnits() {
