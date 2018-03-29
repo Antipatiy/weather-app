@@ -7,8 +7,8 @@
 
 <script>
   import store from './store/index';
-  import SearchCity from './components/SearchCity/SearchCity'
-  import WeatherView from './components/WeatherView/WeatherView'
+  import SearchCity from './components/SearchCity/SearchCity.vue'
+  import WeatherView from './components/WeatherView/WeatherView.vue'
 
   export default {
     name: 'App',

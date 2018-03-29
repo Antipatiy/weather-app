@@ -1,3 +1,5 @@
+"use strict";
+
 const DAYSOFWEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
   'November', 'December'];
@@ -94,15 +96,13 @@ export default {
       this.$store.commit('setIsShowWeather', false);
     },
 
-    changeUnits() {
-      if (this.metric) {
-        this.$store.commit('changeUnitsQueryMemorize', '&units=imperial');
-      }
-      else {
+    checkUnits() {
+      this.metric ? this.$store.commit('changeUnitsQueryMemorize', '&units=imperial') :
         this.$store.commit('changeUnitsQueryMemorize', '&units=metric');
-      }
+    },
 
-      console.log(this.$store.state.queryMemorize.units);
+    changeUnits() {
+      this.checkUnits();
       this.$store.dispatch('setAsyncWeatherData', this.$store.state.queryMemorize);
     },
 

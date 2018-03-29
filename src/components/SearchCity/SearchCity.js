@@ -1,3 +1,5 @@
+"use strict";
+
 export default {
   name: 'StartPage',
 
@@ -21,11 +23,8 @@ export default {
     },
 
     searchByCoordinate() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.setPosition);
-      } else {
+      navigator.geolocation ? navigator.geolocation.getCurrentPosition(this.setPosition) :
         console.error("Geolocation is not supported by this browser.");
-      }
     },
 
     searchByInput() {
