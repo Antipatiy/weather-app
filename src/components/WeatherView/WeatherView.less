@@ -1,0 +1,63 @@
+.weather {
+  width: 600px;
+  margin: 0 auto;
+  position: relative;
+
+  .material-icons_back {
+    cursor: pointer;
+  }
+
+  .units {
+    .units__checkbox {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+      margin: 10px 0 0 20px;
+
+      & + label {
+        position: relative;
+        padding: 0 0 0 60px;
+        cursor: pointer;
+
+        &:before {
+          content: '';
+          position: absolute;
+          top: -4px;
+          left: 0;
+          width: 70px;
+          height: 26px;
+          border-radius: 13px;
+          box-shadow: inset 0 2px 3px rgba(0, 0, 0, .2);
+          transition: .2s;
+        }
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: 2px;
+          width: 30px;
+          height: 22px;
+          border-radius: 10px;
+          background: #FFF;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+          transition: .2s;
+        }
+      }
+
+      &:checked + label:after {
+        left: 38px;
+      }
+    }
+
+    .units__symbols {
+      position: absolute;
+      left: 250px;
+      z-index: -1;
+    }
+  }
+  .main-icon {
+    color: #ff0000;
+    font-size: 70px;
+  }
+}

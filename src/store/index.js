@@ -18,6 +18,7 @@ export default new Vuex.Store({
     forecast: {},
     isShowWeather: false,
     queryMemorize: {},
+    currentUnits: ''
   },
 
   mutations: {
@@ -43,6 +44,10 @@ export default new Vuex.Store({
 
     changeUnitsQueryMemorize(state, changedUnits) {
       Vue.set(state.queryMemorize, 'units', changedUnits);
+    },
+
+    setUnits(state, units) {
+      state.currentUnits = units;
     }
   },
 
@@ -58,7 +63,8 @@ export default new Vuex.Store({
           commit('updateInputSearch', response[1].data.city.name);
           commit('setIsShowWeather', true);
           commit('setQueryMemorize', {city: city, lon: lon, lat: lat, units: units});
-          return response.data;
+
+          units.slice(7) === 'metric' ? commit('setUnits', 'C') : commit('setUnits', 'F');
         })
         .catch((error) => {
           if (error.response.status === 404) {

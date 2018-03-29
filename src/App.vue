@@ -7,8 +7,8 @@
 
 <script>
   import store from './store/index';
-  import SearchCity from './components/SearchCity'
-  import WeatherView from './components/WeatherView'
+  import SearchCity from './components/SearchCity/SearchCity'
+  import WeatherView from './components/WeatherView/WeatherView'
 
   export default {
     name: 'App',
