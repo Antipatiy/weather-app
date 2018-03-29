@@ -37,5 +37,3 @@
     margin-top: 60px;
   }
 </style>
-
-\;korth
