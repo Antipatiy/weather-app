@@ -26,6 +26,10 @@ export default new Vuex.Store({
       state[data.key] = data.value;
     },
 
+    setUnits(state, units) {
+      state.currentUnits = units.slice(7) === 'metric' ? 'C' : 'F';
+    },
+
     changeUnitsQueryMemorize(state, changedUnits) {
       Vue.set(state.queryMemorize, 'units', changedUnits);
     }
@@ -43,9 +47,7 @@ export default new Vuex.Store({
           commit('mutate', { key: 'inputSearch', value: response[1].data.city.name });
           commit('mutate', { key: 'isShowWeather', value: true });
           commit('mutate', { key: 'queryMemorize', value: {city: city, lon: lon, lat: lat, units: units} });
-
-          units.slice(7) === 'metric' ? commit('mutate', { key: 'currentUnits', value: 'C' }) :
-            commit('mutate', { key: 'currentUnits', value: 'F' });
+          commit('setUnits', units);
         })
         .catch((error) => {
           if (error.response.status === 404) {
