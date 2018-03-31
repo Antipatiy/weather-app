@@ -3,6 +3,7 @@
 import 'promise-polyfill/src/polyfill';
 import Vue from 'vue';
 import App from './App';
+import '../src/assets/styles/reset/reset.less';
 import '../src/assets/styles/weather-icons/less/weather-icons.min.less';
 
 Vue.config.productionTip = false;
