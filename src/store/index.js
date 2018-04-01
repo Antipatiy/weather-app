@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import Session from '../utils/js/Session.js';
 
 const URL = 'https://api.openweathermap.org/data/2.5/';
 const APPID = '&APPID=33272e8b33b64b1c603b1a9cbd022c16';
@@ -13,12 +14,12 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
 
   state: {
-    inputSearch: '',
-    weather: {},
-    forecast: {},
-    isShowWeather: false,
+    inputSearch: Session.getSessionCity(),
+    weather: Session.getSessionWeather(),
+    forecast: Session.getSessionForecast(),
+    isShowWeather: Session.checkSession(),
     queryMemorize: {},
-    currentUnits: ''
+    currentUnits: Session.getSessionUnits() //TODO Допилить!!!!!
   },
 
   mutations: {
