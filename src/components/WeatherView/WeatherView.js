@@ -1,5 +1,7 @@
 "use strict";
 
+import Session from '../../utils/js/Session.js';
+
 const DAYSOFWEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
   'November', 'December'];
@@ -10,7 +12,7 @@ export default {
 
   data() {
     return {
-      metric: true
+      metric: Session.getIsMetricUnits()
     }
   },
 

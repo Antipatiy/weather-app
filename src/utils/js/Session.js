@@ -31,9 +31,22 @@ export default class Session {
   static getSessionUnits() {
     let units = '';
     if (sessionStorage.getItem('query')) {
-      units = sessionStorage.getItem('query') ? JSON.parse(sessionStorage.getItem('query')).units : '';
+      units = JSON.parse(sessionStorage.getItem('query')).units;
       units = units.slice(7) === 'metric' ? 'C' : 'F';
     }
     return units;
+  }
+
+  static getIsMetricUnits() {
+    let units = true;
+    if (sessionStorage.getItem('query')) {
+      units = JSON.parse(sessionStorage.getItem('query')).units;
+      units = units.slice(7) === 'metric';
+    }
+    return units;
+  }
+
+  static getSessionQuery() {
+    return sessionStorage.getItem('query') ? JSON.parse(sessionStorage.getItem('query')) : {};
   }
 };

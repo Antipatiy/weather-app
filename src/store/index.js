@@ -18,8 +18,8 @@ export default new Vuex.Store({
     weather: Session.getSessionWeather(),
     forecast: Session.getSessionForecast(),
     isShowWeather: Session.checkSession(),
-    queryMemorize: {},
-    currentUnits: Session.getSessionUnits() //TODO Допилить!!!!!
+    queryMemorize: Session.getSessionQuery(),
+    currentUnits: Session.getSessionUnits()
   },
 
   mutations: {

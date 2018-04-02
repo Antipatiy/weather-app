@@ -36,7 +36,6 @@
     computed: {
       currentView() {
         this.checkAndSetSessionData();
-
         return this.$store.state.isShowWeather ? WeatherView : SearchCity;
       }
     }
