@@ -16,6 +16,10 @@ export default {
     }
   },
 
+  created() {
+    Session.getBackgroundDataPerTwentyMinutes();
+  },
+
   computed: {
     city() {
       return this.$store.state.inputSearch;
