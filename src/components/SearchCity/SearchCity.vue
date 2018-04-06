@@ -2,9 +2,9 @@
   .search
     input.input-search__city(placeholder="City", v-model.trim="inputSearch", @keyup.enter="searchByInput")
     p.search__location
-      span or
+      span.search__divider or
       br
-      | use my
+      | use&#8194my&#8194;
       span.search__position(@click="searchByCoordinate") current position
       i.material-icons.material-icons_search(@click="searchByInput") search
 </template>

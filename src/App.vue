@@ -42,13 +42,17 @@
 </script>
 
 <style lang="less">
+
+  @font-face {
+    font-family: 'Roboto';
+    src: url('./assets/fonts/Roboto-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Roboto', sans-serif;
     text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
 
     h1 {
       font-size: 24px;
@@ -58,10 +62,6 @@
     h2 {
       font-size: 18px;
       font-weight: bold;
-    }
-
-    p {
-      font-size: 14px;
     }
   }
 </style>
