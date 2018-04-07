@@ -25,16 +25,16 @@ export default {
       return this.$store.state.inputSearch;
     },
 
-    day() {
-      return DAYSOFWEEK[this.timestamp(this.$store.state.weather.dt).getDay()];
+    dayToday() {
+      return DAYSOFWEEK[this.timestamp(this.$store.state.weather.dt).getUTCDay()];
     },
 
     month() {
-      return MONTHS[this.timestamp(this.$store.state.weather.dt).getMonth()];
+      return MONTHS[this.timestamp(this.$store.state.weather.dt).getUTCMonth()];
     },
 
     date() {
-      const DATE = this.timestamp(this.$store.state.weather.dt).getDate();
+      const DATE = this.timestamp(this.$store.state.weather.dt).getUTCDate();
 
       if (DATE === 1 || DATE === 21 || DATE === 31) {
         return DATE + 'st';
@@ -129,6 +129,10 @@ export default {
           DATE === today && HOUR === 18 ||
           DATE === tomorrow && HOUR === 0;
       });
+    },
+
+    dayOnForecast(time) {
+      return DAYSOFWEEK[this.timestamp(time).getUTCDay()];
     }
   }
 }
